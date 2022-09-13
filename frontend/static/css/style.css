@@ -19,8 +19,7 @@
     border-radius: 20px;
     transition: background-color .5s;
 }
-
-a:hover {
+.body_index a:hover {
     background-color: orange;
     color: #21211d;
 }

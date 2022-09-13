@@ -18,7 +18,7 @@ function listarCamioneros() {
                         <td>${camioners.salario}</td>
                         <td>${camioners.poblacion}</td>
                         <td>
-                             <a type= "button" href="/camioners/update/${camioners.id}" class="btn btn-outline-ligth btn-sm"><i class="bi bi-pencil-square text-dark"></i></a>
+                             <a type= "button" href="/camioners/update/${camioners.id}" class="btn btn-outline-ligth btn-sm mb-3"><i class="bi bi-pencil-square text-dark"></i></a>
                              <button type= "button" class="btn btn-outline-ligth btn-sm mb-3" onclick= "eliminarCamionero('${camioners.id}')"><i class="bi bi-trash3-fill text-danger"></i></button>
                         </td>
                     </tr>
