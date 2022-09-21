@@ -5,7 +5,6 @@ router.get('/', (req, res) => {
     res.sendFile(path.resolve('./views/camioneros/listarCamioneros.html'));
 })
 
-
 //crear producto /products/create
 router.get('/create', (req, res) => {
     res.sendFile(path.resolve('./views/camioneros/crearCamioneros.html'));
