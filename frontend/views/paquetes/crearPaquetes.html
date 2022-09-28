@@ -33,6 +33,12 @@
                   <label class="form-label" for="direccionDestinario">Direccion del destinario</label>
                   <input type= "text" class="form-control" id="direccionDestinario" name="direccionDestinario">
                    </div>
+                   <div class="mb-3">
+                    <label class="form-label" for="provincias">Provincias</label>
+                    <select class="form-control" id="provincia" name="provincias">
+                      <option selected>cargando...</option>
+                    </select>
+                     </div>
                     </div>
                   </div>   
                  </div> 
@@ -48,4 +54,9 @@
   
   </body>
   <script src="/js/paquetes.js"></script>
+  <script type="text/javascript">
+     document.addEventListener('DOMContentLoaded', () => {
+        loadSelect()
+      })
+  </script>
 </html>

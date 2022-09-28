@@ -1,15 +1,20 @@
 const router = require('express').Router()
-const { Paquete } = require('../database/models')
+const { Paquete, Provincia } = require('../database/models')
 
 router.get("/:id", (req, res) => {
-    Paquete.findByPk(req.params.id).then(obj => {
-        res.json(obj)
+    Paquete.findByPk(req.params.id).then(obj => { 
+     res.json(obj)
     })
 })
 
 router.get("/", (req, res) => {
     Paquete.findAll({
-        attributes: ['id','codigo','direccionDestinario','destinario','descripcion']
+        attributes: ['id','codigo','direccionDestinario','destinario','descripcion'],
+        include: [{
+            model: Provincia,
+            as: 'provincia',
+            attributes: ["nombre","codigo"]
+        }]
     }).then(list => {
         res.json(list)
     })
@@ -20,7 +25,8 @@ router.post("/create", (req, res) => {
         codigo: req.body.codigo,
         direccionDestinario: req.body.direccionDestinario,
         destinario: req.body.destinario,
-        descripcion: req.body.descripcion
+        descripcion: req.body.descripcion,
+        provinciaId: req.body.provinciaId
     }).then(paquete => {
         res.json(paquete)
     }).catch(error => {
@@ -45,7 +51,8 @@ router.put('/update/:id', (req, res) => {
         codigo: req.body.codigo,
         direccionDestinario: req.body.direccionDestinario,
         destinario: req.body.destinario,
-        descripcion: req.body.descripcion
+        descripcion: req.body.descripcion,
+        provinciaId: req.body.provinciaId
     },{
          where: {
             id: req.params.id

@@ -1,12 +1,18 @@
+
 function listarPaquetes() {
     fetch('http://localhost:4000/paquetes')
         .then(response => response.json())
         .then(data => {
             let paquetes = document.getElementById('paquetes')
-
             let html = ''
+            let provincia = ''
     
              data.map(paquets => {
+              if (paquets.provincia !== null && paquets.provincia !== undefined && paquets.provincia !== {}){
+                provincia =`${paquets.provincia.nombre} (${paquets.provincia.codigo})`
+              }else{
+                provincia = ''
+              }
                 html += `
                     <tr id = "${paquets.id}">
                         <td>${paquets.id}</td>
@@ -14,6 +20,7 @@ function listarPaquetes() {
                         <td>${paquets.descripcion}</td>
                         <td>${paquets.destinario}</td>
                         <td>${paquets.direccionDestinario}</td>
+                        <td>${provincia}</td>
                         <td>
                              <a type= "button" href="/paquets/update/${paquets.id}" class="btn btn-outline-ligth btn-sm mb-3"><i class="bi bi-pencil-square text-dark"></i></a>
                              <button type= "button" class="btn btn-outline-ligth btn-sm mb-3" onclick= "eliminarPaquete('${paquets.id}')"><i class="bi bi-trash3-fill text-danger"></i></button>
@@ -44,13 +51,14 @@ function crearPaquete() {
     const codigo = document.getElementById("codigo")
     const descripcion = document.getElementById("descripcion")
     const direccionDestinario = document.getElementById("direccionDestinario")
-  
+    const provincia = document.getElementById('provincia')
 
     const data = {
         'destinario': destinario.value,
         'codigo': codigo.value,
         'descripcion': descripcion.value,
-        'direccionDestinario': direccionDestinario.value
+        'direccionDestinario': direccionDestinario.value,
+        'provinciaId': provincia.value
     }
 
     fetch(url, {
@@ -75,13 +83,16 @@ function editarPaquete(id) {
   const codigo = document.getElementById("codigo")
   const descripcion = document.getElementById("descripcion")
   const direccionDestinario = document.getElementById("direccionDestinario")
+  const provincia = document.getElementById('provincia')
 
 
   const data = {
       'destinario': destinario.value,
       'codigo': codigo.value,
       'descripcion': descripcion.value,
-      'direccionDestinario': direccionDestinario.value
+      'direccionDestinario': direccionDestinario.value,
+      'provinciaId': provincia.value
+
   }
 
   fetch(url, {
@@ -115,6 +126,7 @@ function getPaquete() {
      document.getElementById("destinario").value = Object.destinario
      document.getElementById("descripcion").value = Object.descripcion
      document.getElementById("direccionDestinario").value = Object.direccionDestinario
+     loadSelect(provincia = Object.provinciaId)
 
      document.getElementById("form").className = ""
      document.getElementById('spinner').className = 'd-none'
@@ -138,4 +150,31 @@ function eliminarPaquete (id) {
       })
     }
 
+}
+
+function getProvincias(provincias, provincia){
+  let url ='http://localhost:4000/provincias'
+  fetch(url, {})
+  .then(response => response.json())
+  .then(data => {
+      let html = '<option value ="null">Seleccionar</option>'
+      let selected = ''
+      data.map(item => {
+        if(item.id == provincia){
+          selected ='selected'
+        }else{
+          selected =''
+        }
+
+        html += `<option value ="${item.id}" ${selected}>${item.nombre}</option>`
+      })
+      provincias.innerHTML = html
+  });
+}
+
+function loadSelect(provincia = null){
+  const provincias = document.getElementById("provincia")
+
+  getProvincias(provincias, provincia)
+  
 }
