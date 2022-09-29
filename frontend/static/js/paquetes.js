@@ -6,12 +6,18 @@ function listarPaquetes() {
             let paquetes = document.getElementById('paquetes')
             let html = ''
             let provincia = ''
+            let camionero= ''
     
              data.map(paquets => {
               if (paquets.provincia !== null && paquets.provincia !== undefined && paquets.provincia !== {}){
                 provincia =`${paquets.provincia.nombre} (${paquets.provincia.codigo})`
               }else{
                 provincia = ''
+              }
+              if (paquets.camionero !== null && paquets.camionero !== undefined && paquets.camionero !== {}){
+                camionero =`${paquets.camionero.nombre} (DNI ${paquets.camionero.dni})`
+              }else{
+                camionero = ''
               }
                 html += `
                     <tr id = "${paquets.id}">
@@ -21,6 +27,7 @@ function listarPaquetes() {
                         <td>${paquets.destinario}</td>
                         <td>${paquets.direccionDestinario}</td>
                         <td>${provincia}</td>
+                        <td>${camionero}</td>
                         <td>
                              <a type= "button" href="/paquets/update/${paquets.id}" class="btn btn-outline-ligth btn-sm mb-3"><i class="bi bi-pencil-square text-dark"></i></a>
                              <button type= "button" class="btn btn-outline-ligth btn-sm mb-3" onclick= "eliminarPaquete('${paquets.id}')"><i class="bi bi-trash3-fill text-danger"></i></button>
@@ -52,13 +59,15 @@ function crearPaquete() {
     const descripcion = document.getElementById("descripcion")
     const direccionDestinario = document.getElementById("direccionDestinario")
     const provincia = document.getElementById('provincia')
+    const camionero = document.getElementById('camionero')
 
     const data = {
         'destinario': destinario.value,
         'codigo': codigo.value,
         'descripcion': descripcion.value,
         'direccionDestinario': direccionDestinario.value,
-        'provinciaId': provincia.value
+        'provinciaId': provincia.value,
+        'camioneroId': camionero.value
     }
 
     fetch(url, {
@@ -84,6 +93,7 @@ function editarPaquete(id) {
   const descripcion = document.getElementById("descripcion")
   const direccionDestinario = document.getElementById("direccionDestinario")
   const provincia = document.getElementById('provincia')
+  const camionero = document.getElementById('camionero')
 
 
   const data = {
@@ -91,7 +101,9 @@ function editarPaquete(id) {
       'codigo': codigo.value,
       'descripcion': descripcion.value,
       'direccionDestinario': direccionDestinario.value,
-      'provinciaId': provincia.value
+      'provinciaId': provincia.value,
+      'camioneroId': camionero.value
+
 
   }
 
@@ -126,7 +138,8 @@ function getPaquete() {
      document.getElementById("destinario").value = Object.destinario
      document.getElementById("descripcion").value = Object.descripcion
      document.getElementById("direccionDestinario").value = Object.direccionDestinario
-     loadSelect(provincia = Object.provinciaId)
+     loadSelectProv(provincia = Object.provinciaId)
+     loadSelectCam(camionero = Object.camioneroId)
 
      document.getElementById("form").className = ""
      document.getElementById('spinner').className = 'd-none'
@@ -172,9 +185,37 @@ function getProvincias(provincias, provincia){
   });
 }
 
-function loadSelect(provincia = null){
+function loadSelectProv(provincia = null){
   const provincias = document.getElementById("provincia")
 
   getProvincias(provincias, provincia)
+  
+}
+
+function getCamioneros(camioneros, camionero){
+  let url ='http://localhost:4000/camioneros'
+  fetch(url, {})
+  .then(response => response.json())
+  .then(data => {
+      let html = '<option value ="null">Seleccionar</option>'
+      let selected = ''
+      data.map(item => {
+        if(item.id == camionero){
+          selected ='selected'
+        }else{
+          selected =''
+        }
+
+        html += `<option value ="${item.id}" ${selected}>${item.nombre}</option>`
+      })
+      camioneros.innerHTML = html
+  });
+}
+
+
+function loadSelectCam(camionero = null){
+  const camioneros = document.getElementById("camionero")
+
+  getCamioneros(camioneros, camionero)
   
 }

@@ -9,10 +9,7 @@ router.get("/:id", (req, res) => {
 router.get("/", (req, res) => {
     Camion.findAll({
         attributes: ['id','matricula', 'modelo', 'tipo','potencia'],
-        include: {
-            model: Camionero,
-            attributes: ['dni', 'nombre'],
-        }
+    
     }).then(list => {
         res.json(list)
     })

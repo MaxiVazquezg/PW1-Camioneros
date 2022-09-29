@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const { Camion, Camionero} = require('../database/models')
+const { Camionero} = require('../database/models')
 
 router.get("/:id", (req, res) => {
     Camionero.findByPk(req.params.id).then(obj => {
@@ -8,11 +8,7 @@ router.get("/:id", (req, res) => {
 })
 router.get("/", (req, res) => {
     Camionero.findAll({
-        attributes: ['id','dni', 'nombre','telefono','direccion','salario','poblacion'],
-        include: {
-            model: Camion,
-            attributes: ['matricula', 'modelo']
-        }
+        attributes: ['id','dni', 'nombre','telefono','direccion','salario','poblacion']
     }).then(list => {
         res.json(list)
     })
