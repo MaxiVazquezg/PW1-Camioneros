@@ -1,1 +1,3 @@
 //main
+'use strict';
+
